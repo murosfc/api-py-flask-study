@@ -18,9 +18,9 @@ try:
     # Register blueprints
     app.register_blueprint(sensors_bp, url_prefix=f'/{VERSION_PREFIX}/sensors')
     blueprints_registered = True
-    print(f"✅ Blueprints registered successfully")
+    print(f"Blueprints registered successfully")
 except Exception as e:
-    print(f"❌ Error importing blueprints: {e}")
+    print(f"Error importing blueprints: {e}")
     import traceback
     traceback.print_exc()
 
