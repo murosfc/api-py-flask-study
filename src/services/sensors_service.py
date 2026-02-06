@@ -7,23 +7,25 @@ class SensorsService:
   
     def get_sensors(self):
         sensors = self.sensor_repository.get_sensors()
-        filtered_sensors = [sensor for sensor in sensors if sensor.value is not None]
+        filtered_sensors = [sensor.to_dict() for sensor in sensors if sensor.value is not None]
         return filtered_sensors
 
     def get_sensor_by_id(self, sensor_id: str):
         sensor = self.sensor_repository.get_sensor_by_id(sensor_id) 
         if not sensor:
             raise ValueError(f"Sensor with id {sensor_id} not found")
-        return sensor
+        return sensor.to_dict()
   
     def add_sensor(self, sensor: Sensor):
         sensor_to_add = self.sensor_repository.get_sensor_by_id(sensor.id)
-        if not sensor_to_add:
+        if sensor_to_add:
             raise ValueError(f"Sensor with id {sensor.id} already exists")
+        self.sensor_repository.add_sensor(sensor)
+        return sensor.to_dict()
 
     def delete_sensor(self, sensor_id: str):
         sensor = self.sensor_repository.get_sensor_by_id(sensor_id)
         if not sensor:
             raise ValueError(f"Sensor with id {sensor_id} not found")
         self.sensor_repository.delete_sensor(sensor)
-        return sensor
+        return sensor.to_dict()
