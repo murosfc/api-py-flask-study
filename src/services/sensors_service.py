@@ -7,7 +7,8 @@ class SensorsService:
   
     def get_sensors(self):
         sensors = self.sensor_repository.get_sensors()
-        return sensors
+        filtered_sensors = [sensor for sensor in sensors if sensor.value is not None]
+        return filtered_sensors
 
     def get_sensor_by_id(self, sensor_id: str):
         sensor = self.sensor_repository.get_sensor_by_id(sensor_id) 

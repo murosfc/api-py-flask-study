@@ -160,11 +160,25 @@ flask shell
 
 ## Next Steps
 
+### Local Development
+
 1. Create your main `app.py` file
 2. Set up basic routes
 3. Test with tools like Postman or curl
 4. Add database models
 5. Implement CRUD operations
 6. Write tests
+
+### Deployment
+
+To deploy this API to Vercel, see the detailed guide in `DEPLOY.md`.
+
+Quick deploy:
+
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
 
 Happy learning! 🚀
