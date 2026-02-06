@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import sys
 import os
 
@@ -6,6 +7,25 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 app = Flask(__name__)
+
+# Load configuration
+try:
+    from config import get_config
+    app.config.from_object(get_config())
+    
+    # Configure CORS with settings from config
+    CORS(app, resources={
+        r"/*": {
+            "origins": app.config['CORS_ORIGINS'],
+            "methods": app.config['CORS_METHODS'],
+            "allow_headers": app.config['CORS_ALLOW_HEADERS']
+        }
+    })
+    print(f"CORS configured for origins: {app.config['CORS_ORIGINS']}")
+except Exception as e:
+    # Fallback: Allow all origins if config fails
+    CORS(app, resources={r"/*": {"origins": "*"}})
+    print(f"CORS configured with default settings (allow all)")
 
 VERSION = '1.0.0'
 VERSION_PREFIX = f'api/v{VERSION.split(".")[0]}'
