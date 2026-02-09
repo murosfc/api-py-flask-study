@@ -23,6 +23,12 @@ class SensorsService:
         self.sensor_repository.add_sensor(sensor)
         return sensor.to_dict()
 
+    def update_sensor(self, sensor: Sensor):
+        updated_sensor = self.sensor_repository.update_sensor(sensor)
+        if not updated_sensor:
+            raise ValueError(f"Sensor with id {sensor.id} not found")
+        return updated_sensor.to_dict()
+
     def delete_sensor(self, sensor_id: str):
         sensor = self.sensor_repository.get_sensor_by_id(sensor_id)
         if not sensor:

@@ -40,9 +40,9 @@ def add_sensor():
             return jsonify({"error": "Missing required field: id"}), 400
         
         sensor = Sensor(
-            id=data.get('id'),
-            value=data.get('value'),
-            timestamp=data.get('timestamp')
+            id=data['id'],  # Required field, already validated
+            value=data['value'],  # Required field, already validated
+            timestamp=data.get('timestamp')  # Optional field
         )
         
         result = sensors_service.add_sensor(sensor)
@@ -51,6 +51,31 @@ def add_sensor():
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@sensors_bp.route('/<string:sensor_id>', methods=['PUT'])
+def update_sensor(sensor_id):
+    """Update sensor"""
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+        
+        if 'value' not in data:
+            return jsonify({"error": "Missing required field: value"}), 400
+        
+        sensor = Sensor(
+            id=sensor_id,
+            value=data['value'],
+            timestamp=data.get('timestamp')
+        )
+        result = sensors_service.update_sensor(sensor)
+        return jsonify(result), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @sensors_bp.route('/<string:sensor_id>', methods=['DELETE'])
 def delete_sensor(sensor_id):
