@@ -8,9 +8,11 @@ class SensorRepository:
     def add_sensor(self, sensor):
         self.sensors.append(sensor)
 
-    def delete_sensor(self, sensor):      
-        self.sensors.remove(sensor)        
-        return sensor
+    def delete_sensor(self, sensor):
+        if sensor in self.sensors:      
+            self.sensors.remove(sensor)        
+            return sensor
+        return None
 
     def get_sensors(self):       
         if not self.sensors:
